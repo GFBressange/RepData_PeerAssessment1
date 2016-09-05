@@ -1,5 +1,6 @@
 ---
 title: "Reproducible Research: Peer Assessment 1"
+author: "Georges Bressange"
 output: 
   html_document:
     keep_md: true
@@ -7,12 +8,70 @@ output:
 
 
 ## Loading and preprocessing the data
+The zip file, as stated in the peer assesment instructions, is already 
+present in the working directory. We unzip it:
 
+```{r}
+unzip("activity.zip")
+```
 
+Then, we read the zip file to produce the analytic data frame we will 
+later use to perform statistic analysis:
 
+```{r}
+activity <- read.csv("activity.csv")
+```
+
+We convert the factor "date" to a date format:
+
+```{r}
+activity$date <- as.Date(activity$date, format = "%Y-%m-%d")
+```
+Let us visualize now the structure of the "activity" data frame:
+
+```{r}
+str(activity)
+```
 ## What is mean total number of steps taken per day?
+Let us create a new variable "days" in the data frame "activity" to separate the 
+observations along days:
 
+```{r}
+activity$Days <- as.Date(cut(activity$date, breaks = "days"))
+```
 
+Let us visualize the structure of "activity":
+
+```{r}
+summary(activity)
+```
+We now plot an histogram of the total number of steps taken each day using 
+ggplot2 (we have interpreted "each day" as "each of the 61 days" since the 
+instructions don't ask for "each day of the week"). NA values have been 
+ignored.
+
+```{r}
+library(ggplot2)
+g <- ggplot(data = activity, aes(Days, steps))
+g + stat_summary(fun.y = sum, geom = "bar", na.rm = TRUE)
+```
+ 
+We now report the mean and median total number of steps taken per day. We first 
+load the dplyr package:
+ 
+```{r}
+library(dplyr)
+```
+
+and summarize with the following naming: the mean total number of steps per day is 
+"mean.steps.daily" and the  the median total number of steps per day is 
+"median.steps.daily":
+
+```{r}
+df1 <- summarise(activity, mean.steps.daily = mean(steps, na.rm = TRUE),
+                 median.steps.daily = median(steps, na.rm = TRUE))
+df1
+```
 
 ## What is the average daily activity pattern?
 
