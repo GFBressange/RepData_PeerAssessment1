@@ -234,28 +234,6 @@ activityfill_by_intervals_weekend <- rename(activityfill_by_intervals_weekend,
 Ploting the time series of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis):
 
 ```{r}
-#par(mfrow=c(2,1))
-plot(activityfill_by_intervals_weekdays$interval, activityfill_by_intervals_weekdays$average.steps.by.interval, 
-     type = "l", xlab = "intervals of 5 min", 
-     ylab = "Average total steps per day", 
-     main ="Time series average total steps by interval \n averaged across all weekdays")
-
-plot(activityfill_by_intervals_weekend$interval, activityfill_by_intervals_weekend$average.steps.by.interval, 
-     type = "l", xlab = "intervals of 5 min", 
-     ylab = "Average total steps per day",
-     main ="Time series average total steps by interval \n averaged across all weekend days")
-
-g1 <- ggplot(data = activityfill_by_intervals_weekdays, aes(interval, average.steps.by.interval))
-p1 <- g1 + geom_line()
-
-g2 <- ggplot(data = activityfill_by_intervals_weekend, aes(interval, average.steps.by.interval))
-p2 <- g2 + geom_line()
-
-p1
-p2
-```
-
-```{r}
 library(reshape)
 x = activityfill_by_intervals_weekdays$interval
 Weekdays <- activityfill_by_intervals_weekdays$average.steps.by.interval
