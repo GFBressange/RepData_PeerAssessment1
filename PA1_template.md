@@ -364,19 +364,23 @@ Ploting the time series of the 5-minute interval (x-axis) and the average number
 
 
 ```r
-par(mfrow=c(2,1))
+#par(mfrow=c(2,1))
 plot(activityfill_by_intervals_weekdays$interval, activityfill_by_intervals_weekdays$average.steps.by.interval, 
      type = "l", xlab = "intervals of 5 min", 
      ylab = "Average total steps per day", 
      main ="Time series average total steps by interval \n averaged across all weekdays")
-
-plot(activityfill_by_intervals_weekend$interval, activityfill_by_intervals_weekend$average.steps.by.interval, 
-     type = "l", xlab = "intervals of 5 min", 
-     ylab = "Average total steps per day", 
-     main ="Time series average total steps by interval \n averaged across all weekend days")
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-22-1.png)<!-- -->
+
+```r
+plot(activityfill_by_intervals_weekend$interval, activityfill_by_intervals_weekend$average.steps.by.interval, 
+     type = "l", xlab = "intervals of 5 min", 
+     ylab = "Average total steps per day",
+     main ="Time series average total steps by interval \n averaged across all weekend days")
+```
+
+![](PA1_template_files/figure-html/unnamed-chunk-22-2.png)<!-- -->
 
 ```r
 g1 <- ggplot(data = activityfill_by_intervals_weekdays, aes(interval, average.steps.by.interval))
@@ -388,11 +392,39 @@ p2 <- g2 + geom_line()
 p1
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-22-2.png)<!-- -->
+![](PA1_template_files/figure-html/unnamed-chunk-22-3.png)<!-- -->
 
 ```r
 p2
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-22-3.png)<!-- -->
+![](PA1_template_files/figure-html/unnamed-chunk-22-4.png)<!-- -->
+
+
+```r
+library(reshape)
+```
+
+```
+## 
+## Attaching package: 'reshape'
+```
+
+```
+## The following object is masked from 'package:dplyr':
+## 
+##     rename
+```
+
+```r
+x = activityfill_by_intervals_weekdays$interval
+Weekdays <- activityfill_by_intervals_weekdays$average.steps.by.interval
+Weekend <- activityfill_by_intervals_weekend$average.steps.by.interval
+df <- data.frame(x, Weekdays,Weekend)
+df.melted <- melt(df, id = "x")
+ggplot(data = df.melted, aes(x = x, y = value)) + 
+        geom_line() + facet_grid(variable ~ .) + labs(x = "5 min time intervals", y = "average total number of steps")
+```
+
+![](PA1_template_files/figure-html/unnamed-chunk-23-1.png)<!-- -->
 
