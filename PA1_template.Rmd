@@ -214,5 +214,44 @@ weekdayslist <- c('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday')
 activityfill$weekDay <- factor((weekdays(activityfill$date) %in% weekdayslist), 
                                levels=c(FALSE, TRUE), labels=c('weekend', 'weekday')) 
 ```
+Let us group similar interval of 5 mins along the days. The resulting data frame 
+is called "activityfill_by_intervals".
 
+```{r}
+activityfill_weekdays <- subset(activityfill, weekDay == "weekday")
+activityfill_weekdays <- select(activityfill_weekdays, interval, steps)
+activityfill_by_intervals_weekdays <- aggregate(activityfill_weekdays, by = list(activityfill_weekdays$interval), FUN = "mean", na.rm = TRUE)
+activityfill_by_intervals_weekdays <- rename(activityfill_by_intervals_weekdays, 
+                                average.steps.by.interval = steps)
+
+activityfill_weekend <- subset(activityfill, weekDay == "weekend")
+activityfill_weekend <- select(activityfill_weekend, interval, steps)
+activityfill_by_intervals_weekend <- aggregate(activityfill_weekend, by = list(activityfill_weekend$interval), FUN = "mean", na.rm = TRUE)
+activityfill_by_intervals_weekend <- rename(activityfill_by_intervals_weekend, 
+                                average.steps.by.interval = steps)
+```
+
+Ploting the time series of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis):
+
+```{r}
+par(mfrow=c(2,1))
+plot(activityfill_by_intervals_weekdays$interval, activityfill_by_intervals_weekdays$average.steps.by.interval, 
+     type = "l", xlab = "intervals of 5 min", 
+     ylab = "Average total steps per day", 
+     main ="Time series average total steps by interval \n averaged across all weekdays")
+
+plot(activityfill_by_intervals_weekend$interval, activityfill_by_intervals_weekend$average.steps.by.interval, 
+     type = "l", xlab = "intervals of 5 min", 
+     ylab = "Average total steps per day", 
+     main ="Time series average total steps by interval \n averaged across all weekend days")
+
+g1 <- ggplot(data = activityfill_by_intervals_weekdays, aes(interval, average.steps.by.interval))
+p1 <- g1 + geom_line()
+
+g2 <- ggplot(data = activityfill_by_intervals_weekend, aes(interval, average.steps.by.interval))
+p2 <- g2 + geom_line()
+
+p1
+p2
+```
 
