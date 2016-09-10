@@ -192,7 +192,8 @@ library(ggplot2)
 
 ```r
 g <- ggplot(data = activity, aes(date, steps))
-g + stat_summary(fun.y = sum, geom = "bar", na.rm = TRUE)
+g + stat_summary(fun.y = sum, geom = "bar", na.rm = TRUE) +
+        ggtitle("Total number of steps taken each day")
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-15-1.png)<!-- -->
@@ -357,7 +358,8 @@ We use the same plot command as used for "activity" dataset.
 
 ```r
 g <- ggplot(data = activityfill, aes(date, steps))
-g + stat_summary(fun.y = sum, geom = "bar", na.rm = TRUE)
+g + stat_summary(fun.y = sum, geom = "bar", na.rm = TRUE) + 
+        ggtitle("Total number of steps taken each day")
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-25-1.png)<!-- -->

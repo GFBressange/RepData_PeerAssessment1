@@ -109,7 +109,8 @@ library(ggplot2)
 
 ```{r, fig.show='asis'}
 g <- ggplot(data = activity, aes(date, steps))
-g + stat_summary(fun.y = sum, geom = "bar", na.rm = TRUE)
+g + stat_summary(fun.y = sum, geom = "bar", na.rm = TRUE) +
+        ggtitle("Total number of steps taken each day")
 ```
  
 3. We now report the mean and median total number of steps taken per day. The dplyr 
@@ -222,7 +223,8 @@ We use the same plot command as used for "activity" dataset.
 
 ```{r}
 g <- ggplot(data = activityfill, aes(date, steps))
-g + stat_summary(fun.y = sum, geom = "bar", na.rm = TRUE)
+g + stat_summary(fun.y = sum, geom = "bar", na.rm = TRUE) + 
+        ggtitle("Total number of steps taken each day")
 ```
 
 We now report the mean and median total number of steps taken per day. 
