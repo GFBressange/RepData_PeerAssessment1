@@ -39,21 +39,32 @@ str(activity)
 
 ```{r}
 library(dplyr)
+```
+
+```{r}
 totalnumbersteps1 <- summarise(group_by(activity, date), total.steps.daily = sum(steps, na.rm = TRUE))
-head(totalnumbersteps1)
+```
+
+We use the command kabble to present the table of results:
+
+```{r, results='asis'}
+knitr::kable(totalnumbersteps1)
 ```
 
 2. We now plot an histogram of the total number of steps taken each day using 
 ggplot2 (we have interpreted "each day" as "each of the 61 days" since the 
 instructions don't ask for "each day of the week"). NA values have been 
 ignored. A word on the differences between histogram and barplot: an histogram 
-is used to describe the ditribution of one quantitaive variable. A barplot is used 
-to compare several categorical vairables. Here, we want to study the distribution 
+is used to describe the ditribution of one quantitative variable. A barplot is used 
+to compare several categorical variables. Here, we want to study the distribution 
 of the "steps" variable but this variable is partially already counted so we 
 have used a barplot to be able to specify the counted steps on the y-axis.
 
 ```{r}
 library(ggplot2)
+```
+
+```{r}
 g <- ggplot(data = activity, aes(date, steps))
 g + stat_summary(fun.y = sum, geom = "bar", na.rm = TRUE)
 ```
@@ -66,12 +77,16 @@ total number of steps per day is "median.steps.daily":
 ```{r}
 report1 <- summarise(activity, mean.steps.daily = mean(steps, na.rm = TRUE),
                  median.steps.daily = median(steps, na.rm = TRUE))
-report1
 ```
+
+```{r, results='asis'}
+knitr::kable(report1)
+```
+
 The anonymous individual performs around `r round(report1$mean.steps.daily[1])` steps 
 per day and the fact that the median total number of steps per day is zero means 
 that for at least 50% of the days in these two months, the anonymous individual 
-don't perform any step.
+don't perform any step (or no steps were recorded 50% of the time).
 
 ## What is the average daily activity pattern?
 1. We group similar interval of 5 mins along the days. The resulting data frame 
@@ -83,7 +98,10 @@ activity_by_intervals <- aggregate(activity, by = list(activity$interval),
 activity_by_intervals <- select(activity_by_intervals, interval, steps)
 activity_by_intervals <- rename(activity_by_intervals, 
                                 average.steps.by.interval = steps)
-head(activity_by_intervals,10)
+```
+
+```{r}
+summary(activity_by_intervals)
 ```
 
 We now make a time series plot (type = "l") of the 5-minute interval (x-axis) and 
@@ -95,6 +113,7 @@ plot(activity_by_intervals$interval, activity_by_intervals$average.steps.by.inte
      ylab = "Average total steps per day", 
      main ="Time series average total steps \n per day by interval")
 ```
+
 2. The 5-minute interval, on average across all the days in the dataset, 
 contains the maximum number of steps can be obtained by the following 
 commands, performed on the dataset "activity_by_intervals":
@@ -106,7 +125,7 @@ n <- activity_by_intervals[
 activity_by_intervals[activity_by_intervals$average.steps.by.interval == M,]
 ```
 
-The 5-minute interval, on average across all the days in the dataset, 
+The 5-minute interval which, on average across all the days in the dataset, 
 that contains the maximum number of steps is the interval `r n` i.e., after 
 time conversion, between 13h55 and 14h00. To confirm that, we ploted again 
 the time series presented in 1. by adding a blue horizontal line 
@@ -144,8 +163,8 @@ summary(activity)
 
 2. Strategy for filling in all of the missing values in the dataset. 
 
-We decide to replace each missing steps value by the mean of the 5-minute interval 
-they belong.
+We decide to replace each missing "steps"" value by the mean of the 5-minute interval 
+to which they belong.
 
 3. Creating a new dataset "activityfill" that is equal to the original dataset but with the missing data filled in.
 
@@ -171,7 +190,10 @@ We now report the mean and median total number of steps taken per day.
 ```{r}
 report2 <- summarise(activityfill, mean.steps.daily = mean(steps, na.rm = TRUE),
                  median.steps.daily = median(steps, na.rm = TRUE))
-report2
+```
+
+```{r, results='asis'}
+knitr::kable(report2)
 ```
 
 These values don't differ from the estimates from the first part of the assignment.
@@ -182,7 +204,8 @@ Let us calculate the total number of steps taken per day in "activityfill":
 totalnumbersteps2 <- summarise(group_by(activityfill, date), total.steps.daily = sum(steps, na.rm = TRUE))
 head(totalnumbersteps2)
 ```
-As a result of imputing missing values, we calculate below increase of the total number of steps per day:
+
+As a result of imputing missing values, we calculate below the average of the increase of the total number of steps per day:
 
 ```{r}
 impactfill <- data.frame(date = totalnumbersteps1$date, 
@@ -207,6 +230,7 @@ The following code is useful because my locales are french and I want to obtain 
 curr_locale <- Sys.getlocale("LC_TIME")
 Sys.setlocale("LC_TIME","en_US.UTF-8")
 ```
+
 Creating the weekdays factor variable:
 
 ```{r}
@@ -214,6 +238,7 @@ weekdayslist <- c('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday')
 activityfill$weekDay <- factor((weekdays(activityfill$date) %in% weekdayslist), 
                                levels=c(FALSE, TRUE), labels=c('weekend', 'weekday')) 
 ```
+
 Let us group similar interval of 5 mins along the days. The resulting data frame 
 is called "activityfill_by_intervals".
 
@@ -243,4 +268,3 @@ df.melted <- melt(df, id = "x")
 ggplot(data = df.melted, aes(x = x, y = value)) + 
         geom_line() + facet_grid(variable ~ .) + labs(x = "5 min time intervals", y = "average total number of steps")
 ```
-
