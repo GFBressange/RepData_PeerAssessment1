@@ -88,10 +88,10 @@ library(dplyr)
 totalnumbersteps1 <- summarise(group_by(activity, date), total.steps.daily = sum(steps, na.rm = TRUE))
 ```
 
-We use the command kabble to present the table of results:
+Let us present the head of the table of results:
 
 ```{r}
-head(totalnumbersteps1,61)
+head(totalnumbersteps1)
 ```
 
 2. We now plot an histogram of the total number of steps taken each day using 

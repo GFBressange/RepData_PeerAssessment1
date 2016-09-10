@@ -247,22 +247,17 @@ $(document).ready(function () {
 </ol>
 <pre class="r"><code>library(dplyr)</code></pre>
 <pre class="r"><code>totalnumbersteps1 &lt;- summarise(group_by(activity, date), total.steps.daily = sum(steps, na.rm = TRUE))</code></pre>
-<p>We use the command kabble to present the table of results:</p>
-<pre class="r"><code>head(totalnumbersteps1,61)</code></pre>
-<pre><code>## # A tibble: 61 x 2
-##          date total.steps.daily
-##        &lt;date&gt;             &lt;int&gt;
-## 1  2012-10-01                 0
-## 2  2012-10-02               126
-## 3  2012-10-03             11352
-## 4  2012-10-04             12116
-## 5  2012-10-05             13294
-## 6  2012-10-06             15420
-## 7  2012-10-07             11015
-## 8  2012-10-08                 0
-## 9  2012-10-09             12811
-## 10 2012-10-10              9900
-## # ... with 51 more rows</code></pre>
+<p>Let us present the head of the table of results:</p>
+<pre class="r"><code>head(totalnumbersteps1)</code></pre>
+<pre><code>## # A tibble: 6 x 2
+##         date total.steps.daily
+##       &lt;date&gt;             &lt;int&gt;
+## 1 2012-10-01                 0
+## 2 2012-10-02               126
+## 3 2012-10-03             11352
+## 4 2012-10-04             12116
+## 5 2012-10-05             13294
+## 6 2012-10-06             15420</code></pre>
 <ol start="2" style="list-style-type: decimal">
 <li>We now plot an histogram of the total number of steps taken each day using ggplot2 (we have interpreted “each day” as “each of the 61 days” since the instructions don’t ask for “each day of the week”). NA values have been ignored. A word on the differences between histogram and barplot: an histogram is used to describe the ditribution of one quantitative variable. A barplot is used to compare several categorical variables. Here, we want to study the distribution of the “steps” variable but this variable is partially already counted so we have used a barplot to be able to specify the counted steps on the y-axis.</li>
 </ol>
