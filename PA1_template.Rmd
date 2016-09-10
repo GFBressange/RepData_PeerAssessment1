@@ -243,28 +243,13 @@ Let us group similar interval of 5 mins along the days. The resulting data frame
 is called "activityfill_by_intervals".
 
 ```{r}
-activityfill_weekdays <- subset(activityfill, weekDay == "weekday")
-activityfill_weekdays <- select(activityfill_weekdays, interval, steps)
-activityfill_by_intervals_weekdays <- aggregate(activityfill_weekdays, by = list(activityfill_weekdays$interval), FUN = "mean", na.rm = TRUE)
-activityfill_by_intervals_weekdays <- rename(activityfill_by_intervals_weekdays, 
-                                average.steps.by.interval = steps)
-
-activityfill_weekend <- subset(activityfill, weekDay == "weekend")
-activityfill_weekend <- select(activityfill_weekend, interval, steps)
-activityfill_by_intervals_weekend <- aggregate(activityfill_weekend, by = list(activityfill_weekend$interval), FUN = "mean", na.rm = TRUE)
-activityfill_by_intervals_weekend <- rename(activityfill_by_intervals_weekend, 
-                                average.steps.by.interval = steps)
+by_weekdays_and_interval <- group_by(activityfill, weekDay, interval)
+activityfill_by_intervals <- summarise(by_weekdays_and_interval, average.total.daily.steps = mean(steps, na.rm = TRUE))
 ```
 
-Ploting the time series of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis):
+2. Ploting the time series of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis):
 
 ```{r}
-library(reshape)
-x = activityfill_by_intervals_weekdays$interval
-Weekdays <- activityfill_by_intervals_weekdays$average.steps.by.interval
-Weekend <- activityfill_by_intervals_weekend$average.steps.by.interval
-df <- data.frame(x, Weekdays,Weekend)
-df.melted <- melt(df, id = "x")
-ggplot(data = df.melted, aes(x = x, y = value)) + 
-        geom_line() + facet_grid(variable ~ .) + labs(x = "5 min time intervals", y = "average total number of steps")
+g <- ggplot(data = activityfill_by_intervals, aes(interval, average.total.daily.steps))
+g + geom_line() + facet_wrap(~weekDay, nrow = 2)
 ```
