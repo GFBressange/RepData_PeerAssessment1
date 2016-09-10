@@ -160,79 +160,25 @@ We use the command kabble to present the table of results:
 
 
 ```r
-library(knitr)
+head(totalnumbersteps1,61)
 ```
 
-
-```r
-kable(totalnumbersteps1)
 ```
-
-
-
-date          total.steps.daily
------------  ------------------
-2012-10-01                    0
-2012-10-02                  126
-2012-10-03                11352
-2012-10-04                12116
-2012-10-05                13294
-2012-10-06                15420
-2012-10-07                11015
-2012-10-08                    0
-2012-10-09                12811
-2012-10-10                 9900
-2012-10-11                10304
-2012-10-12                17382
-2012-10-13                12426
-2012-10-14                15098
-2012-10-15                10139
-2012-10-16                15084
-2012-10-17                13452
-2012-10-18                10056
-2012-10-19                11829
-2012-10-20                10395
-2012-10-21                 8821
-2012-10-22                13460
-2012-10-23                 8918
-2012-10-24                 8355
-2012-10-25                 2492
-2012-10-26                 6778
-2012-10-27                10119
-2012-10-28                11458
-2012-10-29                 5018
-2012-10-30                 9819
-2012-10-31                15414
-2012-11-01                    0
-2012-11-02                10600
-2012-11-03                10571
-2012-11-04                    0
-2012-11-05                10439
-2012-11-06                 8334
-2012-11-07                12883
-2012-11-08                 3219
-2012-11-09                    0
-2012-11-10                    0
-2012-11-11                12608
-2012-11-12                10765
-2012-11-13                 7336
-2012-11-14                    0
-2012-11-15                   41
-2012-11-16                 5441
-2012-11-17                14339
-2012-11-18                15110
-2012-11-19                 8841
-2012-11-20                 4472
-2012-11-21                12787
-2012-11-22                20427
-2012-11-23                21194
-2012-11-24                14478
-2012-11-25                11834
-2012-11-26                11162
-2012-11-27                13646
-2012-11-28                10183
-2012-11-29                 7047
-2012-11-30                    0
+## # A tibble: 61 x 2
+##          date total.steps.daily
+##        <date>             <int>
+## 1  2012-10-01                 0
+## 2  2012-10-02               126
+## 3  2012-10-03             11352
+## 4  2012-10-04             12116
+## 5  2012-10-05             13294
+## 6  2012-10-06             15420
+## 7  2012-10-07             11015
+## 8  2012-10-08                 0
+## 9  2012-10-09             12811
+## 10 2012-10-10              9900
+## # ... with 51 more rows
+```
 
 2. We now plot an histogram of the total number of steps taken each day using 
 ggplot2 (we have interpreted "each day" as "each of the 61 days" since the 
@@ -254,7 +200,7 @@ g <- ggplot(data = activity, aes(date, steps))
 g + stat_summary(fun.y = sum, geom = "bar", na.rm = TRUE)
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-16-1.png)<!-- -->
+![](PA1_template_files/figure-html/unnamed-chunk-15-1.png)<!-- -->
  
 3. We now report the mean and median total number of steps taken per day. The dplyr 
 package has already been loaded. We summarize with the following naming: 
@@ -265,18 +211,13 @@ total number of steps per day is "median.steps.daily":
 ```r
 report1 <- summarise(activity, mean.steps.daily = mean(steps, na.rm = TRUE),
                  median.steps.daily = median(steps, na.rm = TRUE))
+report1
 ```
 
-
-```r
-knitr::kable(report1)
 ```
-
-
-
- mean.steps.daily   median.steps.daily
------------------  -------------------
-          37.3826                    0
+##   mean.steps.daily median.steps.daily
+## 1          37.3826                  0
+```
 
 The anonymous individual performs around 37 steps 
 per day and the fact that the median total number of steps per day is zero means 
@@ -322,7 +263,7 @@ plot(activity_by_intervals$interval, activity_by_intervals$average.steps.by.inte
      main ="Time series average total steps \n per day by interval")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-21-1.png)<!-- -->
+![](PA1_template_files/figure-html/unnamed-chunk-19-1.png)<!-- -->
 
 2. The 5-minute interval, on average across all the days in the dataset, 
 contains the maximum number of steps can be obtained by the following 
@@ -360,7 +301,7 @@ text(x = 650, y = 195, labels = "y = 206.17", col = "blue")
 text(x = 650, y = 125, labels = "x = 515", col = "red")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-23-1.png)<!-- -->
+![](PA1_template_files/figure-html/unnamed-chunk-21-1.png)<!-- -->
 
 ## Imputing missing values
 1. Calculate and report the total number of missing values in the dataset 
@@ -424,7 +365,7 @@ g <- ggplot(data = activityfill, aes(date, steps))
 g + stat_summary(fun.y = sum, geom = "bar", na.rm = TRUE)
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-27-1.png)<!-- -->
+![](PA1_template_files/figure-html/unnamed-chunk-25-1.png)<!-- -->
 
 We now report the mean and median total number of steps taken per day. 
 
@@ -432,18 +373,13 @@ We now report the mean and median total number of steps taken per day.
 ```r
 report2 <- summarise(activityfill, mean.steps.daily = mean(steps, na.rm = TRUE),
                  median.steps.daily = median(steps, na.rm = TRUE))
+report2
 ```
 
-
-```r
-knitr::kable(report2)
 ```
-
-
-
- mean.steps.daily   median.steps.daily
------------------  -------------------
-          37.3826                    0
+##   mean.steps.daily median.steps.daily
+## 1          37.3826                  0
+```
 
 These values don't differ from the estimates from the first part of the assignment.
 
@@ -531,6 +467,6 @@ g + geom_line() + facet_wrap(~weekDay, nrow = 2) + xlab("5 minutes intervals") +
         ggtitle("Time Series of average total steps \n per day by interval")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-35-1.png)<!-- -->
+![](PA1_template_files/figure-html/unnamed-chunk-32-1.png)<!-- -->
 
 **Conclusion**: the weekdays and weekend activity patterns  are slightly different. They share a maximum intensity around interval 515 (08h00 - 08h05) but in the afternoon and evening, the weekend activity is globally more intense.

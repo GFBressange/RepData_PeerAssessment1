@@ -91,11 +91,7 @@ totalnumbersteps1 <- summarise(group_by(activity, date), total.steps.daily = sum
 We use the command kabble to present the table of results:
 
 ```{r}
-library(knitr)
-```
-
-```{r}
-kable(totalnumbersteps1)
+head(totalnumbersteps1,61)
 ```
 
 2. We now plot an histogram of the total number of steps taken each day using 
@@ -124,10 +120,7 @@ total number of steps per day is "median.steps.daily":
 ```{r}
 report1 <- summarise(activity, mean.steps.daily = mean(steps, na.rm = TRUE),
                  median.steps.daily = median(steps, na.rm = TRUE))
-```
-
-```{r, results='asis'}
-knitr::kable(report1)
+report1
 ```
 
 The anonymous individual performs around `r round(report1$mean.steps.daily[1])` steps 
@@ -237,10 +230,7 @@ We now report the mean and median total number of steps taken per day.
 ```{r}
 report2 <- summarise(activityfill, mean.steps.daily = mean(steps, na.rm = TRUE),
                  median.steps.daily = median(steps, na.rm = TRUE))
-```
-
-```{r, results='asis'}
-knitr::kable(report2)
+report2
 ```
 
 These values don't differ from the estimates from the first part of the assignment.
