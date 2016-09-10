@@ -4,6 +4,7 @@ author: "Georges Bressange"
 output: 
   html_document:
     keep_md: yes
+    toc: yes
 ---
 
 
@@ -106,7 +107,7 @@ have used a barplot to be able to specify the counted steps on the y-axis.
 library(ggplot2)
 ```
 
-```{r}
+```{r, fig.show='asis'}
 g <- ggplot(data = activity, aes(date, steps))
 g + stat_summary(fun.y = sum, geom = "bar", na.rm = TRUE)
 ```
