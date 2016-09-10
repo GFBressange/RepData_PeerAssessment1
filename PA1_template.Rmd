@@ -90,8 +90,12 @@ totalnumbersteps1 <- summarise(group_by(activity, date), total.steps.daily = sum
 
 We use the command kabble to present the table of results:
 
-```{r, results='asis'}
-knitr::kable(totalnumbersteps1)
+```{r}
+library(knitr)
+```
+
+```{r}
+kable(totalnumbersteps1)
 ```
 
 2. We now plot an histogram of the total number of steps taken each day using 

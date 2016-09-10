@@ -108,23 +108,6 @@ Using the mutate function of the dplyr library, let us transform the interval va
 library(dplyr)
 ```
 
-```
-## 
-## Attaching package: 'dplyr'
-```
-
-```
-## The following objects are masked from 'package:stats':
-## 
-##     filter, lag
-```
-
-```
-## The following objects are masked from 'package:base':
-## 
-##     intersect, setdiff, setequal, union
-```
-
 ```r
 activity <- mutate(activity, interval = fint(interval))
 ```
@@ -177,7 +160,12 @@ We use the command kabble to present the table of results:
 
 
 ```r
-knitr::kable(totalnumbersteps1)
+library(knitr)
+```
+
+
+```r
+kable(totalnumbersteps1)
 ```
 
 
@@ -266,7 +254,7 @@ g <- ggplot(data = activity, aes(date, steps))
 g + stat_summary(fun.y = sum, geom = "bar", na.rm = TRUE)
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-15-1.png)<!-- -->
+![](PA1_template_files/figure-html/unnamed-chunk-16-1.png)<!-- -->
  
 3. We now report the mean and median total number of steps taken per day. The dplyr 
 package has already been loaded. We summarize with the following naming: 
@@ -334,7 +322,7 @@ plot(activity_by_intervals$interval, activity_by_intervals$average.steps.by.inte
      main ="Time series average total steps \n per day by interval")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-20-1.png)<!-- -->
+![](PA1_template_files/figure-html/unnamed-chunk-21-1.png)<!-- -->
 
 2. The 5-minute interval, on average across all the days in the dataset, 
 contains the maximum number of steps can be obtained by the following 
@@ -372,7 +360,7 @@ text(x = 650, y = 195, labels = "y = 206.17", col = "blue")
 text(x = 650, y = 125, labels = "x = 515", col = "red")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-22-1.png)<!-- -->
+![](PA1_template_files/figure-html/unnamed-chunk-23-1.png)<!-- -->
 
 ## Imputing missing values
 1. Calculate and report the total number of missing values in the dataset 
@@ -436,7 +424,7 @@ g <- ggplot(data = activityfill, aes(date, steps))
 g + stat_summary(fun.y = sum, geom = "bar", na.rm = TRUE)
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-26-1.png)<!-- -->
+![](PA1_template_files/figure-html/unnamed-chunk-27-1.png)<!-- -->
 
 We now report the mean and median total number of steps taken per day. 
 
@@ -543,6 +531,6 @@ g + geom_line() + facet_wrap(~weekDay, nrow = 2) + xlab("5 minutes intervals") +
         ggtitle("Time Series of average total steps \n per day by interval")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-34-1.png)<!-- -->
+![](PA1_template_files/figure-html/unnamed-chunk-35-1.png)<!-- -->
 
 **Conclusion**: the weekdays and weekend activity patterns  are slightly different. They share a maximum intensity around interval 515 (08h00 - 08h05) but in the afternoon and evening, the weekend activity is globally more intense.
