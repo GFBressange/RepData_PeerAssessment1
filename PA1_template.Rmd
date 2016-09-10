@@ -22,18 +22,60 @@ later use to perform statistic analysis:
 activity <- read.csv("activity.csv")
 ```
 
+```{r}
+str(activity)
+```
+
 2. We convert the factor "date" to a date format:
 
 ```{r}
 activity$date <- as.Date(activity$date, format = "%Y-%m-%d")
 ```
 
-Let us visualize now the structure of the "activity" data frame:
-
 ```{r}
 str(activity)
 ```
- 
+
+The "interval" variable is not an arithmetic suite of time: after the 55 minute interval, the id interval jumps to 100 as we can see from the command:
+
+```{r}
+unique(activity$interval)
+```
+
+The series of time intervals and those we would like to have are then:
+
+| Series of 5 min intervals   | New Series of 5 min intervals|
+| ----------------------------| ----------------------------|
+| 0 - 5 - 10 -  ...      - 55 | 0 - 5 - 10 -  ...      - 55 |
+| 100 - 105 - 110 - ... - 155 | 60 - 65 - 70 - ...    - 115 |
+| 200 - 205 - 210 - ... - 255 | 120 - 125 - 130 - ... - 175 |
+| 300 - 305 - 310 - ... - 355 | 180 - 185 - 190 - ... - 235 |
+| ........................... | ........................... |
+| 2300 - 2305 - ... -    2355 | 1380 - 1385 - ... -    1435 |
+
+A mathematical function to make this transformation is
+
+```{r}
+fint <- function(x){x - 40*floor(x/100)}
+```
+
+where floor(y) is the integer part of a real number y.
+
+Using the mutate function of the dplyr library, let us transform the interval variable according to previous function:
+
+```{r}
+library(dplyr)
+```
+```{r}
+activity <- mutate(activity, interval = fint(interval))
+```
+
+```{r}
+unique(activity$interval)
+```
+
+We see now that the last 5 minute interval is 1435-1440 which is coherent since in a day there are 1440 minutes (24 times 60).
+
 ## What is mean total number of steps taken per day?
 1. Let us calculate the total number of steps taken per day in "activity":
 
@@ -127,7 +169,7 @@ activity_by_intervals[activity_by_intervals$average.steps.by.interval == M,]
 
 The 5-minute interval which, on average across all the days in the dataset, 
 that contains the maximum number of steps is the interval `r n` i.e., after 
-time conversion, between 13h55 and 14h00. To confirm that, we ploted again 
+time conversion, between 08h00 and 08h05. To confirm that, we ploted again 
 the time series presented in 1. by adding a blue horizontal line 
 corresponding to the maximum of steps (y = `r M`) end a red vertical line 
 corresponding to the interval where this maximum occurs (x = `r n`).
@@ -136,11 +178,11 @@ corresponding to the interval where this maximum occurs (x = `r n`).
 plot(activity_by_intervals$interval, activity_by_intervals$average.steps.by.interval, 
      type = "l", xlab = "intervals of 5 min", 
      ylab = "Average total steps per day", 
-     main ="Time series average total steps \n per day by interval")
+     main ="Time series of average total steps \n per day by interval")
 abline(h = M, col = "blue")
 abline(v = n, col = "red")
-text(x = 1500, y = 195, labels = "y = 206.17", col = "blue")
-text(x = 970, y = 125, labels = "x = 835", col = "red")
+text(x = 650, y = 195, labels = "y = 206.17", col = "blue")
+text(x = 650, y = 125, labels = "x = 515", col = "red")
 ```
 
 ## Imputing missing values
@@ -209,8 +251,8 @@ As a result of imputing missing values, we calculate below the average of the in
 
 ```{r}
 impactfill <- data.frame(date = totalnumbersteps1$date, 
-                      daily.increase = totalnumbersteps2$total.steps.daily - 
-                              totalnumbersteps1$total.steps.daily)
+                         daily.increase = totalnumbersteps2$total.steps.daily -    
+                                 totalnumbersteps1$total.steps.daily)
 report3 <- summarise(impactfill, mean.daily.increase = mean(daily.increase), 
           median.daily.increase = median(daily.increase))
 meanincreasesteps <- report3$mean.daily.increase
@@ -251,5 +293,8 @@ activityfill_by_intervals <- summarise(by_weekdays_and_interval, average.total.d
 
 ```{r}
 g <- ggplot(data = activityfill_by_intervals, aes(interval, average.total.daily.steps))
-g + geom_line() + facet_wrap(~weekDay, nrow = 2)
+g + geom_line() + facet_wrap(~weekDay, nrow = 2) + xlab("5 minutes intervals") +
+        ggtitle("Time Series of average total steps \n per day by interval")
 ```
+
+**Conclusion**: the weekdays and weekend activity patterns  are slightly different. They share a maximum intensity around interval 515 (08h00 - 08h05) but in the afternoon and evening, the weekend activity is globally more intense.
